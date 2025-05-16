@@ -3,6 +3,8 @@
 
 #include <MoveBG/MapObjGeneral.hpp>
 
+class TMirrorActor;
+
 class TItem : public TMapObjGeneral {
 public:
 	TItem(const char*);
@@ -20,8 +22,10 @@ public:
 	virtual void killByTimer(int);
 	virtual void taken(THitActor*);
 
+	static f32 mAppearedScaleSpeed;
+
 public:
-	/* 0x148 */ u32 unk148;
+	/* 0x148 */ THitActor* unk148;
 	/* 0x14C */ u32 unk14C;
 	/* 0x150 */ u32 unk150;
 };
@@ -41,7 +45,7 @@ public:
 	void appearWithoutSound();
 
 public:
-	/* 0x154 */ u32 unk154;
+	/* 0x154 */ TMirrorActor* unk154;
 };
 
 class TFlowerCoin : public TCoin {
@@ -49,6 +53,9 @@ public:
 	TFlowerCoin();
 
 	virtual void load(JSUMemoryInputStream&);
+
+public:
+	/* 0x158 */ u32 unk158;
 };
 
 class TCoinEmpty : public TCoin {
@@ -101,6 +108,15 @@ public:
 	void movingUp();
 	void movingCircle();
 
+	static u32 mPromiLife;
+	static u32 mSenkoRate;
+	static u32 mKiraRate;
+	static u32 mBowRate;
+	static u32 mCircleRateY;
+	static u32 mUpSpeed;
+	static u32 mSpeedDownRate;
+	static u32 mSpeedDownTime;
+
 public:
 	/* 0x154 */ u32 unk154;
 	/* 0x158 */ f32 unk158;
@@ -138,7 +154,7 @@ public:
 	virtual u32 receiveMessage(THitActor*, u32);
 	virtual void control();
 	virtual void touchActor(THitActor*);
-	virtual void getHitObjNumMax();
+	virtual u16 getHitObjNumMax() { return 10; }
 
 	void startFruit();
 	void touchFruit(THitActor*);
@@ -148,7 +164,10 @@ public:
 
 class TItemNozzle : public TItem {
 public:
-	TItemNozzle();
+	TItemNozzle()
+	    : TItem("ノズル")
+	{
+	}
 
 	virtual void load(JSUMemoryInputStream&);
 	virtual u32 receiveMessage(THitActor*, u32);

@@ -13,8 +13,12 @@ public:
 
 	virtual void setPreNode(TBGCheckList*) { }
 
+	// fabricated
+	TBGCheckList* getNext() { return mNext; }
+	void setNext(TBGCheckList* v) { mNext = v; }
+
 public:
-	/* 0x4 */ TBGCheckList* unk4;
+	/* 0x4 */ TBGCheckList* mNext;
 	/* 0x8 */ TBGCheckData* unk8;
 };
 
@@ -27,6 +31,9 @@ public:
 		// TODO: maybe unkC is TBGCheckList*?
 		unkC = (TBGCheckListWarp*)node;
 	}
+
+	// fabricated
+	TBGCheckListWarp* getPreNode() { return unkC; }
 
 public:
 	/* 0xC */ TBGCheckListWarp* unkC;
@@ -43,6 +50,7 @@ public:
 };
 
 struct TBGWallCheckRecord {
+	// fabricated
 	TBGWallCheckRecord(f32 x, f32 y, f32 z, f32 param_4, u32 param_5,
 	                   u32 param_6)
 	    : unk0(x, y, z)
@@ -51,12 +59,22 @@ struct TBGWallCheckRecord {
 	    , unk18(param_6)
 	{
 	}
+	// fabricated
+	TBGWallCheckRecord(const JGeometry::TVec3<f32>& param_1, f32 param_2,
+	                   u32 param_3, u32 param_4)
+	    : unk0(param_1)
+	    , unkC(param_2)
+	    , unk10(param_3)
+	    , unk18(param_4)
+	{
+	}
 
 	/* 0x0 */ JGeometry::TVec3<f32> unk0;
 	/* 0xC */ f32 unkC;
 	/* 0x10 */ u32 unk10;
 	/* 0x14 */ u32 unk14;
 	/* 0x18 */ u32 unk18;
+	/* 0x1C */ TBGCheckData* unk1C;
 };
 
 class TMapCollisionData;
@@ -70,7 +88,7 @@ public:
 
 	TMapCollisionData();
 
-	void polygonIsInGrid(f32, f32, f32, f32, TBGCheckData*);
+	bool polygonIsInGrid(f32, f32, f32, f32, TBGCheckData*);
 	void intersectLine(const JGeometry::TVec3<f32>&,
 	                   const JGeometry::TVec3<f32>&, bool,
 	                   JGeometry::TVec3<f32>*) const;
@@ -94,15 +112,18 @@ public:
 	void removeCheckListNode(s32, s32);
 
 	void addCheckDataToGrid(TBGCheckData*, int);
-	void getGridArea(const TBGCheckData*, int, int*, int*, int*, int*);
+	bool getGridArea(const TBGCheckData*, int, int*, int*, int*, int*);
 	void addCheckDataToList(int, int, int, int, TBGCheckData*);
-	void getListRoot(int, int, int, int) const;
+	TBGCheckList* getListRoot(int, int, int, int) const;
 
 	TBGCheckList* allocCheckList(int type, int count);
 	u32 getEntryID();
 	TBGCheckData* allocCheckData(u32 count);
 
 	static TBGCheckData mIllegalCheckData;
+
+	// fabricated
+	u32 getEntryRelatedThing(u16 n) const { return unk40 - unk42[n]; }
 
 public:
 	/* 0x0 */ f32 unk0;
