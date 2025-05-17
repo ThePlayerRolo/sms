@@ -68,7 +68,10 @@ void SMS_MarioWarpRequest(const JGeometry::TVec3<float>& vec, float f)
 	gpMarioOriginal->warpRequest(vec, f);
 }
 
-void SMS_MarioMoveRequest(const JGeometry::TVec3<float>& vec) { }
+void SMS_MarioMoveRequest(const JGeometry::TVec3<float>& vec) { 
+	
+  return gpMarioOriginal->moveRequest(vec);
+}
 
 u8 SMS_IsMarioDashing()
 {
@@ -100,7 +103,20 @@ bool SMS_IsMarioOpeningDoor()
 	}
 }
 
-u8 SMS_IsMarioOnWire() { }
+u8 SMS_IsMarioOnWire()
+{
+	u8 uVar1;
+
+	if (gpMarioOriginal->action || (*(int*)(gpMarioOriginal->actionState + 0x4c) != 0x40000098)) {
+		uVar1 = 1;
+	} else {
+		uVar1 = 0;
+	}
+	if (uVar1)
+		return 1;
+	else
+		return 0;
+}
 
 u8 SMS_IsMarioTouchGround4cm()
 {
